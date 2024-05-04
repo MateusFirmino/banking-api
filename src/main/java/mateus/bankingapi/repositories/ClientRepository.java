@@ -9,6 +9,8 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
   boolean existsByName(String name);
 
+
+
   Client findByAccountNumber(String accountNumber);
 
 }
