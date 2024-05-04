@@ -16,11 +16,11 @@ public class ClientService {
   }
 
   public Client findByNumAccount(String numAccount) {
-    return repository.findByNumConta(numAccount);
+    return repository.findByAccountNumber(numAccount);
   }
 
   public void ifNameExistsThrowsException(String name) throws Exception {
-    if (repository.existsByNome(name)) {
+    if (repository.existsByName(name)) {
       throw new Exception("Nome ja cadastrado! Nome: " + name);
     }
   }

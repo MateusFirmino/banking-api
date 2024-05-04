@@ -1,17 +1,15 @@
-version: '3.8'
+version: '3.9'
 
 services:
   postgres:
     image: postgres
-    container_name: postgres-bankingRepo
+    container_name: banking-api-db
     environment:
-      POSTGRES_DB: bankingRepo
+      POSTGRES_DB: banking_api_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - C:/Users/Mateus/Documents/DB:/var/lib/postgresql/data
 
-volumes:
-  postgres_data:

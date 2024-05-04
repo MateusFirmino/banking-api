@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-  List<Transaction> findByData(LocalDate data);
+  List<Transaction> findByDate(LocalDate date);
 
 }
