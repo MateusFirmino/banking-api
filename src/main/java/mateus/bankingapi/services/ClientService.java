@@ -1,15 +1,18 @@
 package mateus.bankingapi.services;
 
+import io.hypersistence.tsid.TSID;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import mateus.bankingapi.controllers.dto.ClientCreateRequest;
 import mateus.bankingapi.controllers.dto.ClientCreateResponse;
-import mateus.bankingapi.controllers.dto.ClientShowAll;
+import mateus.bankingapi.controllers.dto.ClientShow;
 import mateus.bankingapi.models.Client;
 import mateus.bankingapi.repositories.ClientRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 @Service
 public class ClientService {
@@ -24,7 +27,8 @@ public class ClientService {
     client.setName(clientCreateRequest.getName());
     client.setAge(clientCreateRequest.getAge());
     client.setEmail(clientCreateRequest.getEmail());
-    client.setAccountNumber(clientCreateRequest.getAccountNumber());
+    client.setAccountNumber(String.valueOf(TSID.Factory.getTsid().toLong()));
+    client.setBalance(BigDecimal.ZERO);
     repository.save(client);
 
     return ClientCreateResponse.builder()
@@ -33,28 +37,20 @@ public class ClientService {
       .age(client.getAge())
       .email(client.getEmail())
       .accountNumber(client.getAccountNumber())
+      .balance(client.getBalance())
       .build();
   }
 
-  public Client findByNumAccount(String numAccount) {
-    return repository.findByAccountNumber(numAccount);
-  }
-
-  public Page<ClientShowAll> findAll(final Pageable pageable) {
-     Page<Client> clientAllPage = repository.findAll(pageable);
-     return clientAllPage.map( client -> ClientShowAll.builder()
-       .id(client.getId())
-       .name(client.getName())
-       .age(client.getAge())
-       .email(client.getEmail())
-       .accountNumber(client.getAccountNumber())
-       .build());
-  }
-
-  public void ifNameExistsThrowsException(String name) throws Exception {
-    if (repository.existsByName(name)) {
-      throw new Exception("Nome ja cadastrado! Nome: " + name);
-    }
+  public Page<ClientShow> findAll(final Pageable pageable) {
+    Page<Client> clientAllPage = repository.findAll(pageable);
+    return clientAllPage.map(client -> ClientShow.builder()
+      .id(client.getId())
+      .name(client.getName())
+      .age(client.getAge())
+      .email(client.getEmail())
+      .balance(client.getBalance())
+      .accountNumber(client.getAccountNumber())
+      .build());
   }
 
 }

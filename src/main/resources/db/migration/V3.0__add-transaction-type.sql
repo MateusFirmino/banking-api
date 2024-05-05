@@ -1,0 +1,1 @@
+ALTER TABLE transaction add transaction_type VARCHAR(15) not null

@@ -1,0 +1,1 @@
+ALTER TABLE client add balance DECIMAL not null

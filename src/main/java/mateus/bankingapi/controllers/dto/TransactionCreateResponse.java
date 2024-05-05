@@ -4,16 +4,14 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @Builder
-public class ClientCreateResponse {
-
+public class TransactionCreateResponse {
   private Long id;
-  private String name;
-  private Integer age;
-  private String email;
+  private BigDecimal value;
+  private LocalDateTime date;
   private String accountNumber;
-  private BigDecimal balance;
-
 }
