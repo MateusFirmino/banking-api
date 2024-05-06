@@ -1,0 +1,1 @@
+ALTER TABLE transaction add sender VARCHAR(20) not null

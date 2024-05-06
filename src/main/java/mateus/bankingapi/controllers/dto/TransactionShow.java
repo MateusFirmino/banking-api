@@ -2,6 +2,7 @@ package mateus.bankingapi.controllers.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import mateus.bankingapi.models.TransactionType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -9,11 +10,9 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class TransactionShow {
-  private Long id;
-  private String value;
+  private BigDecimal value;
   private LocalDateTime date;
   private String accountNumber;
-  private BigDecimal balance;
-  private ClientShow client;
+  private TransactionType transactionType;
 
 }

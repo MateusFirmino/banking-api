@@ -1,0 +1,1 @@
+ALTER TABLE transaction add account_number VARCHAR(255) not null

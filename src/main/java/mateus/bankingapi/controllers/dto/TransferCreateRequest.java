@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 import lombok.Data;
+import mateus.bankingapi.models.TransactionType;
 
 import java.math.BigDecimal;
 

@@ -1,0 +1,1 @@
+ALTER TABLE transaction add receiver VARCHAR(20) not null
