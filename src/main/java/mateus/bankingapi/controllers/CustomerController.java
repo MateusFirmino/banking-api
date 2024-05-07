@@ -1,14 +1,14 @@
 package mateus.bankingapi.controllers;
 
-import mateus.bankingapi.controllers.dto.ClientBalanceResponse;
-import mateus.bankingapi.controllers.dto.ClientCreateRequest;
-import mateus.bankingapi.controllers.dto.ClientCreateResponse;
-import mateus.bankingapi.controllers.dto.ClientShow;
+import mateus.bankingapi.controllers.dto.CustomerBalanceResponse;
+import mateus.bankingapi.controllers.dto.CustomerCreateRequest;
+import mateus.bankingapi.controllers.dto.CustomerCreateResponse;
+import mateus.bankingapi.controllers.dto.CustomerShow;
 import mateus.bankingapi.controllers.dto.TransactionCreateRequest;
 import mateus.bankingapi.controllers.dto.TransactionCreateResponse;
 import mateus.bankingapi.controllers.dto.TransactionShow;
 import mateus.bankingapi.controllers.response.ApiResponse;
-import mateus.bankingapi.services.ClientService;
+import mateus.bankingapi.services.CustomerService;
 import mateus.bankingapi.services.TransactionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,23 +27,23 @@ import java.time.LocalDate;
 
 
 @RestController
-@RequestMapping("/clients")
-public class ClientController {
+@RequestMapping("/customer")
+public class CustomerController {
 
-  private final ClientService clientService;
+  private final CustomerService customerService;
   private final TransactionService transactionService;
 
-  public ClientController(
-    ClientService clientService,
+  public CustomerController(
+    CustomerService customerService,
     TransactionService transactionService
   ) {
-    this.clientService = clientService;
+    this.customerService = customerService;
     this.transactionService = transactionService;
   }
 
   @PostMapping
-  public ResponseEntity<ApiResponse<ClientCreateResponse>> createClient(@RequestBody ClientCreateRequest createRequest) {
-    final var response = this.clientService.create(createRequest);
+  public ResponseEntity<ApiResponse<CustomerCreateResponse>> createClient(@RequestBody CustomerCreateRequest createRequest) {
+    final var response = this.customerService.create(createRequest);
     final var location = ServletUriComponentsBuilder.fromCurrentRequest()
       .path("/{id}")
       .buildAndExpand(response.getId())
@@ -52,8 +52,8 @@ public class ClientController {
   }
 
   @GetMapping()
-  public ResponseEntity<ApiResponse<Page<ClientShow>>> findAll(Pageable pageable) {
-    Page<ClientShow> page = this.clientService.findAll(pageable);
+  public ResponseEntity<ApiResponse<Page<CustomerShow>>> findAll(Pageable pageable) {
+    Page<CustomerShow> page = this.customerService.findAll(pageable);
     return ResponseEntity.ok(ApiResponse.of(page));
   }
 
@@ -67,8 +67,8 @@ public class ClientController {
   }
 
   @GetMapping("/balances")
-  public ResponseEntity<ApiResponse<Page<ClientBalanceResponse>>> getAllClientBalances(Pageable pageable) {
-    Page<ClientBalanceResponse> balancesPage = clientService.getAllClientBalances(pageable);
+  public ResponseEntity<ApiResponse<Page<CustomerBalanceResponse>>> getAllClientBalances(Pageable pageable) {
+    Page<CustomerBalanceResponse> balancesPage = customerService.getAllClientBalances(pageable);
     return ResponseEntity.ok(ApiResponse.of(balancesPage));
   }
 

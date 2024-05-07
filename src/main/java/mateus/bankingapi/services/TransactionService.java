@@ -5,14 +5,12 @@ import jakarta.validation.Valid;
 import mateus.bankingapi.controllers.dto.TransactionCreateRequest;
 import mateus.bankingapi.controllers.dto.TransactionCreateResponse;
 import mateus.bankingapi.controllers.dto.TransactionShow;
-import mateus.bankingapi.controllers.dto.TransferCreateRequest;
-import mateus.bankingapi.controllers.dto.TransferCreateResponse;
 import mateus.bankingapi.exception.BusinessException;
 import mateus.bankingapi.exception.ResourceNotFoundException;
-import mateus.bankingapi.models.Client;
+import mateus.bankingapi.models.Customer;
 import mateus.bankingapi.models.Transaction;
 import mateus.bankingapi.models.TransactionType;
-import mateus.bankingapi.repositories.ClientRepository;
+import mateus.bankingapi.repositories.CustomerRepository;
 import mateus.bankingapi.repositories.TransactionRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,14 +25,14 @@ import java.time.LocalDateTime;
 public class TransactionService {
 
   private final TransactionRepository repository;
-  private final ClientRepository clientRepository;
+  private final CustomerRepository customerRepository;
 
   public TransactionService(
     TransactionRepository repository,
-    ClientRepository clientRepository
+    CustomerRepository customerRepository
   ) {
     this.repository = repository;
-    this.clientRepository = clientRepository;
+    this.customerRepository = customerRepository;
   }
 
   @Transactional
@@ -46,11 +44,11 @@ public class TransactionService {
     transaction.setAmount(transactionCreateRequest.getValue());
     LocalDateTime dateNow = LocalDateTime.now();
     transaction.setDate(dateNow);
-    transaction.setClient(client);
+    transaction.setCustomer(client);
     transaction.setAccountNumber(transactionCreateRequest.getAccountNumber());
     transaction.setTransactionType(TransactionType.DEPOSIT);
 
-    clientRepository.save(client);
+    customerRepository.save(client);
     repository.save(transaction);
 
     return TransactionCreateResponse.builder()
@@ -73,12 +71,12 @@ public class TransactionService {
     transaction.setAmount(transactionCreateRequest.getValue());
     LocalDateTime dateNow = LocalDateTime.now();
     transaction.setDate(dateNow);
-    transaction.setClient(client);
+    transaction.setCustomer(client);
     transaction.setAccountNumber(transactionCreateRequest.getAccountNumber());
     transaction.setTransactionType(TransactionType.WITHDRAW);
     repository.save(transaction);
 
-    clientRepository.save(client);
+    customerRepository.save(client);
 
     return TransactionCreateResponse.builder()
       .id(transaction.getId())
@@ -91,15 +89,15 @@ public class TransactionService {
 
   private static void verifyBalance(
     TransactionCreateRequest transactionCreateRequest,
-    Client client
+    Customer customer
   ) {
-    if (client.getBalance().compareTo(transactionCreateRequest.getValue()) < 1) {
+    if (customer.getBalance().compareTo(transactionCreateRequest.getValue()) < 1) {
       throw new BusinessException("Insufficient balance to make the withdraw.");
     }
   }
 
-  private Client getClient(TransactionCreateRequest transactionCreateRequest) {
-    return clientRepository.findByAccountNumber(transactionCreateRequest.getAccountNumber())
+  private Customer getClient(TransactionCreateRequest transactionCreateRequest) {
+    return customerRepository.findByAccountNumber(transactionCreateRequest.getAccountNumber())
       .orElseThrow(() -> new ResourceNotFoundException("Client not found"));
   }
 

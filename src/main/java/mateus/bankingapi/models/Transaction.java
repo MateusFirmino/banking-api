@@ -28,6 +28,6 @@ public class Transaction {
   private String accountNumber;
   @ManyToOne
   @JoinColumn(name = "client_id")
-  private Client client;
+  private Customer customer;
 
 }

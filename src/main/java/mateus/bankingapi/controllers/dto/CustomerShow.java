@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @Builder
-public class ClientShow {
+public class CustomerShow {
   private Long id;
   private String name;
   private Date birthdate;

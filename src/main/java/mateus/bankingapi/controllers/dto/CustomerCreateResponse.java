@@ -1,20 +1,22 @@
 package mateus.bankingapi.controllers.dto;
 
-import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class ClientCreateRequest {
+@Builder
+public class CustomerCreateResponse {
 
-  @NotNull
+  private Long id;
   private String name;
-  @NotNull
   @DateTimeFormat(pattern = "dd/MM/yyyy")
   private Date birthdate;
-  @NotNull
   private String email;
+  private String accountNumber;
+  private BigDecimal balance;
 
 }

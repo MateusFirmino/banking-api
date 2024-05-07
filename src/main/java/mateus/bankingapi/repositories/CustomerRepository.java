@@ -1,19 +1,19 @@
 package mateus.bankingapi.repositories;
 
-import mateus.bankingapi.models.Client;
+import mateus.bankingapi.models.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface ClientRepository extends JpaRepository<Client, Long> {
+public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
   boolean existsByName(String name);
 
 
-  Optional<Client> findByAccountNumber(String accountNumber);
+  Optional<Customer> findByAccountNumber(String accountNumber);
 
-  Optional<Client> findByEmail(String email);
+  Optional<Customer> findByEmail(String email);
 
 }
