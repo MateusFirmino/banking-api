@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class TransactionShow {
-  private BigDecimal value;
+  private BigDecimal amount;
   private LocalDateTime date;
   private String accountNumber;
   private TransactionType transactionType;

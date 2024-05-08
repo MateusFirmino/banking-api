@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class TransactionCreateRequest {
   @NotNull
   @Positive
-  private BigDecimal value;
+  private BigDecimal amount;
   @NotNull
   private String accountNumber;
 }

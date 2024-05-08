@@ -38,10 +38,10 @@ public class TransactionService {
   @Transactional
   public TransactionCreateResponse deposit(@Valid TransactionCreateRequest transactionCreateRequest) {
     final var client = getClient(transactionCreateRequest);
-    client.setBalance(client.getBalance().add(transactionCreateRequest.getValue()));
+    client.setBalance(client.getBalance().add(transactionCreateRequest.getAmount()));
 
     Transaction transaction = new Transaction();
-    transaction.setAmount(transactionCreateRequest.getValue());
+    transaction.setAmount(transactionCreateRequest.getAmount());
     LocalDateTime dateNow = LocalDateTime.now();
     transaction.setDate(dateNow);
     transaction.setCustomer(client);
@@ -53,7 +53,7 @@ public class TransactionService {
 
     return TransactionCreateResponse.builder()
       .id(transaction.getId())
-      .value(transaction.getAmount())
+      .amount(transaction.getAmount())
       .date(dateNow)
       .accountNumber(client.getAccountNumber())
       .transactionType(transaction.getTransactionType())
@@ -65,10 +65,10 @@ public class TransactionService {
     final var client = getClient(transactionCreateRequest);
     verifyBalance(transactionCreateRequest, client);
 
-    client.setBalance(client.getBalance().subtract(transactionCreateRequest.getValue()));
+    client.setBalance(client.getBalance().subtract(transactionCreateRequest.getAmount()));
 
     Transaction transaction = new Transaction();
-    transaction.setAmount(transactionCreateRequest.getValue());
+    transaction.setAmount(transactionCreateRequest.getAmount());
     LocalDateTime dateNow = LocalDateTime.now();
     transaction.setDate(dateNow);
     transaction.setCustomer(client);
@@ -80,7 +80,7 @@ public class TransactionService {
 
     return TransactionCreateResponse.builder()
       .id(transaction.getId())
-      .value(transaction.getAmount())
+      .amount(transaction.getAmount())
       .date(dateNow)
       .accountNumber(client.getAccountNumber())
       .transactionType(transaction.getTransactionType())
@@ -91,7 +91,7 @@ public class TransactionService {
     TransactionCreateRequest transactionCreateRequest,
     Customer customer
   ) {
-    if (customer.getBalance().compareTo(transactionCreateRequest.getValue()) < 1) {
+    if (customer.getBalance().compareTo(transactionCreateRequest.getAmount()) < 1) {
       throw new BusinessException("Insufficient balance to make the withdraw.");
     }
   }
@@ -107,7 +107,7 @@ public class TransactionService {
   ) {
     Page<Transaction> transactionPage = repository.getTransactionsByAccountNumber(accountNumber, pageable);
     return transactionPage.map(extract -> TransactionShow.builder()
-      .value(extract.getAmount())
+      .amount(extract.getAmount())
       .date(extract.getDate())
       .accountNumber(accountNumber)
       .transactionType(extract.getTransactionType())
@@ -117,7 +117,7 @@ public class TransactionService {
   public Page<TransactionShow> getAllTransactionsForToday(LocalDate date, Pageable pageable) {
     final var result= repository.findByDate(date, pageable);
     return result.map(extract -> TransactionShow.builder()
-      .value(extract.getAmount())
+      .amount(extract.getAmount())
       .date(extract.getDate())
       .accountNumber(extract.getAccountNumber())
       .transactionType(extract.getTransactionType())

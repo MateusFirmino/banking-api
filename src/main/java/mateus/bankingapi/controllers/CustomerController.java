@@ -1,5 +1,6 @@
 package mateus.bankingapi.controllers;
 
+import jakarta.validation.Valid;
 import mateus.bankingapi.controllers.dto.CustomerBalanceResponse;
 import mateus.bankingapi.controllers.dto.CustomerCreateRequest;
 import mateus.bankingapi.controllers.dto.CustomerCreateResponse;
@@ -42,7 +43,7 @@ public class CustomerController {
   }
 
   @PostMapping
-  public ResponseEntity<ApiResponse<CustomerCreateResponse>> createClient(@RequestBody CustomerCreateRequest createRequest) {
+  public ResponseEntity<ApiResponse<CustomerCreateResponse>> createCustomer(@Valid @RequestBody CustomerCreateRequest createRequest) {
     final var response = this.customerService.create(createRequest);
     final var location = ServletUriComponentsBuilder.fromCurrentRequest()
       .path("/{id}")

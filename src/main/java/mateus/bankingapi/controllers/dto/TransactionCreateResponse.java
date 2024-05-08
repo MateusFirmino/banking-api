@@ -6,13 +6,12 @@ import mateus.bankingapi.models.TransactionType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Data
 @Builder
 public class TransactionCreateResponse {
   private Long id;
-  private BigDecimal value;
+  private BigDecimal amount;
   private LocalDateTime date;
   private String accountNumber;
   private TransactionType transactionType;
