@@ -1,5 +1,6 @@
 package mateus.bankingapi.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class Transaction {
   private BigDecimal amount;
   @Column(name = "date")
   @NotNull
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
   private LocalDateTime date;
   @Column(name = "transaction_type")
   @Enumerated(EnumType.STRING)

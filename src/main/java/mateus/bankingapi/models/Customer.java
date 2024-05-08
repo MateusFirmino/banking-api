@@ -12,7 +12,7 @@ import jakarta.persistence.TemporalType;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -28,7 +28,7 @@ public class Customer {
   @Column(name = "birthdate")
   @Temporal(TemporalType.DATE)
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "UTC")
-  private Date birthdate;
+  private LocalDate birthdate;
   @Column(name = "email")
   private String email;
   @Column(name = "balance")

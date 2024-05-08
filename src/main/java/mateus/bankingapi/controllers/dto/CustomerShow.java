@@ -4,14 +4,14 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Builder
 public class CustomerShow {
   private Long id;
   private String name;
-  private Date birthdate;
+  private LocalDate birthdate;
   private String email;
   private BigDecimal balance;
   private String accountNumber;

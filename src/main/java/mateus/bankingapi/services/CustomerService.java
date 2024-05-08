@@ -46,29 +46,30 @@ public class CustomerService {
   }
 
   private void verifyEmail(CustomerCreateRequest customerCreateRequest) {
-    Optional<Customer> existingClient = repository.findByEmail(customerCreateRequest.getEmail());
-    if (existingClient.isPresent()) {
+    Optional<Customer> existingCustomer = repository.findByEmail(customerCreateRequest.getEmail());
+    if (existingCustomer.isPresent()) {
       throw new BusinessException("Email is already in use");
     }
   }
 
   public Page<CustomerShow> findAll(final Pageable pageable) {
-    Page<Customer> clientAllPage = repository.findAll(pageable);
-    return clientAllPage.map(client -> CustomerShow.builder()
-      .id(client.getId())
-      .name(client.getName())
-      .birthdate(client.getBirthdate())
-      .email(client.getEmail())
-      .balance(client.getBalance())
-      .accountNumber(client.getAccountNumber())
+    Page<Customer> customersAllPage = repository.findAll(pageable);
+    return customersAllPage.map(customer -> CustomerShow.builder()
+      .id(customer.getId())
+      .name(customer.getName())
+      .birthdate(customer.getBirthdate())
+      .email(customer.getEmail())
+      .balance(customer.getBalance())
+      .accountNumber(customer.getAccountNumber())
       .build());
   }
 
   public Page<CustomerBalanceResponse> getAllClientBalances(Pageable pageable) {
-    Page<Customer> clientsPage = repository.findAll(pageable);
-    return clientsPage.map(client -> CustomerBalanceResponse.builder()
-      .balance(client.getBalance())
-      .accountNumber(client.getAccountNumber())
+    Page<Customer> customersPage = repository.findAll(pageable);
+    return customersPage.map(customer -> CustomerBalanceResponse.builder()
+      .name(customer.getName())
+      .balance(customer.getBalance())
+      .accountNumber(customer.getAccountNumber())
       .build());
   }
 

@@ -17,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Validated
@@ -37,52 +36,52 @@ public class TransactionService {
 
   @Transactional
   public TransactionCreateResponse deposit(@Valid TransactionCreateRequest transactionCreateRequest) {
-    final var client = getClient(transactionCreateRequest);
-    client.setBalance(client.getBalance().add(transactionCreateRequest.getAmount()));
+    final var customer = getCustomer(transactionCreateRequest);
+    customer.setBalance(customer.getBalance().add(transactionCreateRequest.getAmount()));
 
     Transaction transaction = new Transaction();
     transaction.setAmount(transactionCreateRequest.getAmount());
     LocalDateTime dateNow = LocalDateTime.now();
     transaction.setDate(dateNow);
-    transaction.setCustomer(client);
+    transaction.setCustomer(customer);
     transaction.setAccountNumber(transactionCreateRequest.getAccountNumber());
     transaction.setTransactionType(TransactionType.DEPOSIT);
 
-    customerRepository.save(client);
+    customerRepository.save(customer);
     repository.save(transaction);
 
     return TransactionCreateResponse.builder()
       .id(transaction.getId())
       .amount(transaction.getAmount())
       .date(dateNow)
-      .accountNumber(client.getAccountNumber())
+      .accountNumber(customer.getAccountNumber())
       .transactionType(transaction.getTransactionType())
       .build();
   }
 
   @Transactional
   public TransactionCreateResponse withdraw(@Valid TransactionCreateRequest transactionCreateRequest) {
-    final var client = getClient(transactionCreateRequest);
-    verifyBalance(transactionCreateRequest, client);
+    final var customer = getCustomer(transactionCreateRequest);
+    verifyBalance(transactionCreateRequest, customer);
 
-    client.setBalance(client.getBalance().subtract(transactionCreateRequest.getAmount()));
+    customer.setBalance(customer.getBalance().subtract(transactionCreateRequest.getAmount()));
 
     Transaction transaction = new Transaction();
     transaction.setAmount(transactionCreateRequest.getAmount());
     LocalDateTime dateNow = LocalDateTime.now();
     transaction.setDate(dateNow);
-    transaction.setCustomer(client);
+    transaction.setCustomer(customer);
     transaction.setAccountNumber(transactionCreateRequest.getAccountNumber());
     transaction.setTransactionType(TransactionType.WITHDRAW);
     repository.save(transaction);
 
-    customerRepository.save(client);
+    customerRepository.save(customer);
 
     return TransactionCreateResponse.builder()
       .id(transaction.getId())
       .amount(transaction.getAmount())
       .date(dateNow)
-      .accountNumber(client.getAccountNumber())
+      .accountNumber(customer.getAccountNumber())
       .transactionType(transaction.getTransactionType())
       .build();
   }
@@ -96,7 +95,7 @@ public class TransactionService {
     }
   }
 
-  private Customer getClient(TransactionCreateRequest transactionCreateRequest) {
+  private Customer getCustomer(TransactionCreateRequest transactionCreateRequest) {
     return customerRepository.findByAccountNumber(transactionCreateRequest.getAccountNumber())
       .orElseThrow(() -> new ResourceNotFoundException("Client not found"));
   }
@@ -114,8 +113,8 @@ public class TransactionService {
       .build());
   }
 
-  public Page<TransactionShow> getAllTransactionsForToday(LocalDate date, Pageable pageable) {
-    final var result= repository.findByDate(date, pageable);
+  public Page<TransactionShow> getAllTransactionsForToday(Pageable pageable) {
+    final var result= repository.findTodayTransactions( pageable);
     return result.map(extract -> TransactionShow.builder()
       .amount(extract.getAmount())
       .date(extract.getDate())

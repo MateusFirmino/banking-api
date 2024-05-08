@@ -1,11 +1,12 @@
 package mateus.bankingapi.controllers.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 public class CustomerCreateRequest {
@@ -15,8 +16,9 @@ public class CustomerCreateRequest {
   @NotNull
   @DateTimeFormat(pattern = "dd/MM/yyyy")
   @Past(message = "Birthdate must be in the past")
-  private Date birthdate;
+  private LocalDate birthdate;
   @NotNull
+  @Email
   private String email;
 
 }
