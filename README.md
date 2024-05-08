@@ -64,3 +64,84 @@ Endpoint para criação de um customer.
 ```
 
 ----------------------------------------------------------------------------
+
+#### POST /deposit e /withdraw tem o mesmo comportamento
+
+Endpoint para criação de um deposit ou withdraw.
+
+- Request Payload
+
+```
+{
+ {
+"amount": 100,
+  "accountNumber": "575903352908710838"
+}
+}
+
+```
+- Response Payload
+
+```json
+{
+    "success": true,
+    "message": null,
+    "data": {
+        "id": 9,
+        "amount": 100,
+        "date": "2024-05-08T07:32:02.7897366",
+        "accountNumber": "575903352908710838",
+        "transactionType": "DEPOSIT"
+    }
+}
+```
+
+----------------------------------------------------------------------------
+
+#### GET /customer/balances
+
+Endpoint para criação de um customer.
+
+- Response Payload
+
+```json
+{
+    "success": true,
+    "message": null,
+    "data": {
+        "content": [
+            {
+                "name": "mateus ",
+                "accountNumber": "575996316714505206",
+                "balance": 0.00
+            }   
+        ],
+        "pageable": {
+            "pageNumber": 0,
+            "pageSize": 20,
+            "sort": {
+                "empty": true,
+                "sorted": false,
+                "unsorted": true
+            },
+            "offset": 0,
+            "paged": true,
+            "unpaged": false
+        },
+        "last": true,
+        "totalPages": 1,
+        "totalElements": 1,
+        "size": 20,
+        "number": 0,
+        "sort": {
+            "empty": true,
+            "sorted": false,
+            "unsorted": true
+        },
+        "first": true,
+        "numberOfElements": 1,
+        "empty": false
+    }
+}
+```
+
