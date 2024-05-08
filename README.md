@@ -6,6 +6,12 @@
 | Java        | OpenJDK 17            |
 | Maven       | 4.0.0                 |
 | Spring Boot | 3.2.5                 |
+| Postgres    | 16.2-1                |
+
+## Postgres
+As credenciais de acesso e portas podem ser alteradas antes de subir o docker através das variáveis de arquivo
+`application.properties` e `compose.yml`.
+
 
 ## Deploy
 O projeto está dockerizado, caso não tenha instalado, clickar no link e seguir os passos a baixo.
