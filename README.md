@@ -12,6 +12,10 @@
 As credenciais de acesso e portas podem ser alteradas antes de subir o docker através das variáveis de arquivo
 `application.properties` e `compose.yml`.
 
+|       Porta        |        Nome           |  Usuário |  Senha   | 
+|:------------------:|:---------------------:|:--------:|:--------:|
+|        15432       |     banking_api_db   | postgres | 123456  |
+
 
 ## Deploy
 O projeto está dockerizado, caso não tenha instalado, clickar no link e seguir os passos a baixo.
